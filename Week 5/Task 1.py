@@ -173,7 +173,7 @@ while True:
                 print("Mahasiswa tersebut tidak ada di dalam daftar")
             else:
                 print("Mahasiswa tersebut ditemukan")
-                print(f"[ {found.nim} ] [ {found.nama} ] [ {found.nomorHp} ] [ {i.jurusan} ]")
+                print(f"[ {found.nim} ] [ {found.nama} ] [ {found.nomorHp} ] [ {found.jurusan} ]")
         
         else:
             nama = str(input("Nama yang dicari : ")).lower()

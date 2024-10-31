@@ -11,7 +11,7 @@ def checkSortOptionValidity(sortOption):
             raise ValueError("Opsi hanya boleh berupa huruf")
     
     if sortOption not in ["id", "nama", "jenis", "harga"]:
-        raise ValueError("Hanya tersedia opsi pengurutan berdasarkan Nama, NIM, dan jurusan")
+        raise ValueError("Hanya tersedia opsi pengurutan berdasarkan id, nama, jenis, stok, dan harga")
     
     return True
 
@@ -62,7 +62,7 @@ class Stock:
                     
                 except StopIteration:
                     break
-    
+            
     def searchStock(self, nama):
         items = iter(self.storage)
         while True:
@@ -75,7 +75,19 @@ class Stock:
                 break
         
         return False
-
+	
+    def sortedBy(self, sortOption):
+        if sortOption == "id":
+            self.storage.sort(key=lambda x: x.id)
+        elif sortOption == "nama":
+            self.storage.sort(key=lambda x: x.nama)
+        elif sortOption == "jenis":
+            self.storage.sort(key=lambda x: x.jenis)
+        elif sortOption == "harga":
+            self.storage.sort(key=lambda x: x.harga)
+        elif sortOption == "stok":
+            self.storage.sort(key=lambda x: x.stok)
+               
 
 class Item:
     def __init__(self, id, nama, harga, jenis):
@@ -96,6 +108,7 @@ class Item:
             self.history.append(-qty)
         else:
             print("Stok tidak mencukupi untuk pengurangan")
+    
 
 stockList = Stock()
 

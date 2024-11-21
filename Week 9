@@ -63,7 +63,7 @@ class Absensi:
             if i.nama == nama:
                 found.append(i)
         
-        for j in self.dsn:
+        for i in self.dsn:
             if i.nama == nama:
                 found.append(i)
         
@@ -77,7 +77,7 @@ class Absensi:
         elif num == 3:
             self.strategyMhs = SortedByJurusan()
         
-        self.mhs = self.strategyMhs.sorting(data)
+        self.mhs = self.strategyMhs.sorting(self.mhs)
     
     def sortedByDsn (self, num): 
         if num == 1:
@@ -85,7 +85,7 @@ class Absensi:
         elif num == 2:
             self.strategyDsn = SortedByNama()
         
-        self.dsn = self.strategyDsn.sorting(data)
+        self.dsn = self.strategyDsn.sorting(self.dsn)
 
 class SortedByNim:
     def sorting (self, data):

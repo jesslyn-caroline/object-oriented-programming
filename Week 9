@@ -48,7 +48,10 @@ def checkNameValidity(nama):
     return True
 
 def checkGenderValidity (jenisKelamin):
-    if jenisKelamin != 'L' or jenisKelamin != 'P':
+    if len(jenisKelamin) == 0 or jenisKelamin.count(" ") == len(jenisKelamin):
+        raise ValueError("Jenis Kelamin tidak boleh kosong")
+
+    if jenisKelamin != 'L' == jenisKelamin != 'P':
         raise ValueError("Jenis kelamin hanya boleh berupa P atau L")
 
     return True
@@ -73,13 +76,19 @@ def checkPhoneNumValidity (nomorHp):
     return True
 
 def checkClassValidity(kelas):
-    if kelas != "A" or kelas != "B" or kelas != "C":
+    if len(kelas) == 0 or kelas.count(" ") == len(kelas):
+        raise ValueError("Kelas tidak boleh kosong")
+
+    if kelas != "A" and kelas != "B" and kelas != "C":
         raise ValueError("Kelas hanya ada A / B / C")
 
     return True
 
 def checkTimeValidity(jam):
-    if jam != "sore" or jam != "pagi";
+    if len(jam) == 0 or jam.count(" ") == len(jam):
+        raise ValueError("Jam tidak boleh kosong")
+
+    if jam != "sore" and jam != "pagi":
         raise ValueError("Hanya tersedia opsi Pagi dan Sore")
 
     return True
@@ -350,7 +359,7 @@ while True:
 
         jenisKelamin = None
         genderValid = False
-        while note genderValid:
+        while not genderValid:
             try:
                 jenisKelamin = str(input("Jenis Kelamin ( L / P ): ")).upper()
                 genderValid = checkGenderValidity(jenisKelamin)
@@ -417,7 +426,7 @@ while True:
 
         jenisKelamin = None
         genderValid = False
-        while note genderValid:
+        while not genderValid:
             try:
                 jenisKelamin = str(input("Jenis Kelamin ( L / P ): ")).upper()
                 genderValid = checkGenderValidity(jenisKelamin)

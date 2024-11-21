@@ -7,6 +7,7 @@ class Mhs:
         self.kelas = kelas
         self.jam = jam
         self.jurusan = "IF" if nim[2:5] == "111" else "TI" if nim[2:5] == "112" else "SI" if nim[2:5] == "113" else "MN" if nim[2:5] == "211" else "AK"
+        self.As = "mhs"
         
 class Dsn:
     def __init__ (self, nip, nama, jenisKelamin, nomorHp, jabatan):
@@ -15,6 +16,8 @@ class Dsn:
         self.jenisKelamin = jenisKelamin
         self.nomorHp = nomorHp
         self.jabatan = jabatan
+        self.As = "dsn"
+        
         
 class Absensi:
     def __init__ (self, strategyMhs = False, strategyDsn = False):
@@ -41,4 +44,27 @@ class Absensi:
             print("Belum ada dosen yang hadir")
         else:
             for i in self.dsn:
-                print(f"[ {i.nip} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jabatan.title() ]")
+                print(f"[ {i.nip} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jabatan.title()} ]")
+                
+    def searchByCode (self, code):
+        for i in self.mhs:
+            if i.nim == code:
+                return i
+        
+        for i in self.dsn:
+            if i.nip == code:
+                return i
+        
+        return False
+    
+    def searchByName (self, nama):
+        found = []
+        for i in self.mhs:
+            if i.nama == nama:
+                found.append(i)
+        
+        for j in self.dsn:
+            if i.nama == nama:
+                found.append(i)
+        
+        return found

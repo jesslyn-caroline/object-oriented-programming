@@ -261,7 +261,7 @@ while True:
         sortOptionValid = False
         while not sortOptionValid:
             try:
-                sortOption = str(input("Pengurutan berdasarkan : ")).lower()
+                sortOption = str(input("Pengurutan berdasarkan ( NIM / Nama / Jurusan ): ")).lower()
                 sortOptionValid = checkSortOptionValidity(sortOption)
                 
             except ValueError as err:

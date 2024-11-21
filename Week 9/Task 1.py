@@ -437,7 +437,7 @@ while True:
             print("Mahasiswa tersebut sudah pernah ditambahkan")
         else:
             absensi.addToMhs(mhs)
-            print(f"Mahasiswa {nama} berhasil ditambahkan!")
+            print(f"Mahasiswa {nama.title()} berhasil ditambahkan!")
     
     elif op == 5:
         nip = None
@@ -490,7 +490,7 @@ while True:
             print("Dosen tersebut sudah pernah ditambahkan")
         else:
             absensi.addToDsn(dsn)
-            print(f"Dosen {nama} berhasil ditambahkan!")
+            print(f"Dosen {nama.title()} berhasil ditambahkan!")
     
     elif op == 6:
         print("Thank you.")

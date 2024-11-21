@@ -11,7 +11,21 @@ def cls():
 
 
 ### ==== Start of Input Handle ==== ###
+def checkNipValidity(kode):
+    if len(kode) == 0 or kode.count(" ") == len(kode):
+        raise ValueError("Kode tidak boleh kosong")
 
+    if len(kode) != 9:
+        raise ValueError("Kode harus memiliki 9 angka")
+
+    num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    
+    for i in kode:
+        if i not in num:
+            raise ValueError(f"Kode hanya boleh berupa angka")
+            
+    return True
+    
 def checkCodeValidity(kode):
     if len(kode) == 0 or kode.count(" ") == len(kode):
         raise ValueError("Kode tidak boleh kosong")
@@ -51,7 +65,7 @@ def checkGenderValidity (jenisKelamin):
     if len(jenisKelamin) == 0 or jenisKelamin.count(" ") == len(jenisKelamin):
         raise ValueError("Jenis Kelamin tidak boleh kosong")
 
-    if jenisKelamin != 'L' == jenisKelamin != 'P':
+    if jenisKelamin != 'L' and jenisKelamin != 'P':
         raise ValueError("Jenis kelamin hanya boleh berupa P atau L")
 
     return True
@@ -128,6 +142,12 @@ class Absensi:
         self.dsn = []
         self.strategyMhs = strategyMhs
         self.strategyDsn = strategyDsn
+
+    def addToMhs (self, data):
+        self.mhs.append(data)
+
+    def addToDsn (self, data):
+        self.dsn.append(data)
     
     def printAbsensi(self):
         print("Daftar Mahasiswa yang hadir")
@@ -139,7 +159,8 @@ class Absensi:
                 print(f"[ {i.nim} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jurusan}-{i.kelas.title()} {i.jam.title()} ]")
         print()
         self.strategyMhs = GetSum()
-        print(f"Jumlah mahasiswa yang hadir: {self.strategyMhs.getSum(self.mhs)}")
+        totalMhs = self.strategyMhs.getSum(self.mhs)
+        print(f"Jumlah mahasiswa yang hadir: {totalMhs}")
         self.strategyMhs = False
         print()
         print()
@@ -153,8 +174,13 @@ class Absensi:
                 print(f"[ {i.nip} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jabatan.title()} ]")
         print()
         self.strategyDsn = GetSum()
-        print(f"Jumlah dosen yang hadir: {self.strategyDsn.getSum(self.dsn)}")
+        totalDsn = self.strategyDsn.getSum(self.dsn)
+        print(f"Jumlah dosen yang hadir: {totalDsn}")
         self.strategyDsn = False
+        print()
+        print()
+
+        print(f"Total Kehadiran: {totalDsn + totalMhs}")
         
     def searchByNimMhs (self, nim):
         for i in self.mhs:
@@ -371,10 +397,10 @@ while True:
 
         nomorHp = None
         phoneNumValid = False
-        while not genderValid:
+        while not phoneNumValid:
             try:
                 nomorHp = str(input("Nomor HP: "))
-                phoneNumValid = checkGenderValidity(nomorHp)
+                phoneNumValid = checkPhoneNumValidity(nomorHp)
 
             except ValueError as err:
                 print(f"Error: {err}")
@@ -400,17 +426,21 @@ while True:
                 print(f"Error: {err}")
 
         mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas, jam)
-        absensi.mhs.append(mhs)
-
-        print(f"Mahasiswa {nama} berhasil ditambahkan!")
+        
+        found = absensi.searchByNimMhs(nim)
+        if found:
+            print("Mahasiswa tersebut sudah pernah ditambahkan")
+        else:
+            absensi.addToMhs(mhs)
+            print(f"Mahasiswa {nama} berhasil ditambahkan!")
     
     elif op == 5:
         nip = None
         nipValid = False
-        while not nimValid:
+        while not nipValid:
             try:
                 nip = str(input("NIP: "))
-                nipValid = checkCodeValidity(nip)
+                nipValid = checkNipValidity(nip)
 
             except ValueError as err:
                 print(f"Error: {err}")
@@ -438,10 +468,10 @@ while True:
 
         nomorHp = None
         phoneNumValid = False
-        while not genderValid:
+        while not phoneNumValid:
             try:
                 nomorHp = str(input("Nomor HP: "))
-                phoneNumValid = checkGenderValidity(nomorHp)
+                phoneNumValid = checkPhoneNumValidity(nomorHp)
 
             except ValueError as err:
                 print(f"Error: {err}")
@@ -449,9 +479,13 @@ while True:
         jabatan = str(input("Jabatan: "))
 
         dsn = Dsn(nip, nama, jenisKelamin, nomorHp, jabatan)
-        absensi.dsn.append(dsn)
 
-        print(f"Dosen {nama} berhasil ditambahkan!")
+        found = absensi.searchByNipDsn(nip)
+        if found:
+            print("Dosen tersebut sudah pernah ditambahkan")
+        else:
+            absensi.addToDsn(dsn)
+            print(f"Dosen {nama} berhasil ditambahkan!")
     
     elif op == 6:
         print("Thank you.")

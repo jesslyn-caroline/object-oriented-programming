@@ -14,3 +14,19 @@ class Dsn:
         self.jenisKelamin = jenisKelamin
         self.nomorHp = nomorHp
         self.jabatan = jabatan
+        
+class Absensi:
+    def __init__ (self, strategyMhs = False, strategyDsn = False):
+        self.mhs = []
+        self.dsn = []
+        self.strategyMhs = strategyMhs
+        self.strategyDsn = strategyDsn
+    
+    def printAbsensi(self):
+        print("Daftar Mahasiswa yang hadir")
+        print("="*40)
+        if len(self.mhs) == 0:
+            print("Belum ada mahasiswa yang hadir")
+        else:
+            for i in self.mhs:
+                

@@ -34,7 +34,10 @@ class Absensi:
         else:
             for i in self.mhs:
                 print(f"[ {i.nim} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jurusan}-{i.kelas.title()} {i.jam.title()} ]")
-                
+        print()
+        self.strategyMhs = GetSum()
+        print(f"Jumlah mahasiswa yang hadir: {self.strategyMhs.getSum(self.mhs)}")
+        self.strategyMhs = False
         print()
         print()
         
@@ -45,30 +48,41 @@ class Absensi:
         else:
             for i in self.dsn:
                 print(f"[ {i.nip} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jabatan.title()} ]")
-                
-    def searchByCode (self, code):
+        print()
+        self.strategyDsn = GetSum()
+        print(f"Jumlah dosen yang hadir: {self.strategyDsn.getSum(self.dsn)}")
+        self.strategyDsn = False
+        
+    def searchByNimMhs (self, nim):
         for i in self.mhs:
-            if i.nim == code:
+            if i.nim == nim:
                 return i
-        
-        for i in self.dsn:
-            if i.nip == code:
-                return i
-        
+
         return False
     
-    def searchByName (self, nama):
+    def searchByNameMhs (self, nama):
         found = []
         for i in self.mhs:
             if i.nama == nama:
                 found.append(i)
         
+        return found
+
+    def searchByNipDsn (self, nip):
+        for i in self.dsn:
+            if i.nip == nip:
+                return i
+
+        return False
+    
+    def searchByNameDsn (self, nama):
+        found = []
         for i in self.dsn:
             if i.nama == nama:
                 found.append(i)
         
         return found
-    
+
     def sortedByMhs (self, num):
         if num == 1:
             self.strategyMhs = SortedByNim()
@@ -89,16 +103,154 @@ class Absensi:
 
 class SortedByNim:
     def sorting (self, data):
-        return sorted(data, key:lambda x: x.nim)
+        return sorted(data, key=lambda x: x.nim)
         
 class SortedByNama:
     def sorting (self, data):
-        return sorted(data, key:lambda x: x.nama)
+        return sorted(data, key=lambda x: x.nama)
 
 class SortedByJurusan:
     def sorting (self, data):
-        return sorted(data, key:lambda x: x.jurusan)
+        return sorted(data, key=lambda x: x.jurusan)
 
 class SortedByNip:
     def sorting (self, data):
-        return sorted(data, key:lambda x: x.nip)
+        return sorted(data, key=lambda x: x.nip)
+
+class GetSum:
+    def getSum(self, data):
+        return len(data)
+
+
+### Main Program ###
+absensi = Absensi()
+
+while True:
+    print("Menu")
+    print("="*30)
+    print("1. Lihat Absensi")
+    print("2. Mencari data")
+    print("3. Mengurutkan data")
+    print("4. Tambah data mahasiswa")
+    print("5. Tambah data dosen")
+    print("6. Exit")
+    
+    op = int(input("Pilihan menu ( 1 / 2 / 3 / 4 / 5 / 6 ):"))
+    
+    if op == 1:
+        absensi.printAbsensi()
+    
+    elif op == 2:
+        option = str(input("Data apa yang ingin dicari ( Mahasiswa / Dosen )? ")).lower()
+        
+        if option == "mahasiswa":
+            searchBy = str(input("Pencarian berdasarkan ( nim / nama )? ")).lower()
+            if searchBy == "nim":
+                nim = str(input("NIM data yang dicari: "))
+                found = absensi.searchByNimMhs(nim)
+
+                if found:
+                    print("Data ditemukan")
+                    print(f"NIM: {found.nim}")
+                    print(f"Nama: {found.nama}")
+                    print(f"Nomor HP: {found.nomorHp}")
+                    print(f"Jenis Kelamin: {found.jenisKelamin}")
+                    print(f"Kelas: {found.jurusan}-{found.kelas} {found.jam}")
+                else:
+                    print("Data tidak ditemukan")
+                    
+            elif searchBy == "nama":
+                nama = str(input("Nama data yang dicari: ")).lower()
+                found = absensi.searchByNamaMhs(nama)
+
+                if found:
+                    for i in found:
+                        print(f"Nama: {i.nama}")
+                        print(f"NIM: {i.nim}")
+                        print(f"Nomor HP: {i.nomorHp}")
+                        print(f"Jenis Kelamin: {i.jenisKelamin}")
+                        print(f"Kelas: {i.jurusan}-{i.kelas} {i.jam}")
+                else:
+                    print("Data tidak ditemukan")
+
+        elif option == "dosen":
+            searchBy = str(input("Pencarian berdasarkan ( nip / nama )? ")).lower()
+            if searchBy == "nip":
+                nip = str(input("NIP data yang dicari: "))
+                found = absensi.searchByNipDsn(nip)
+
+                if found:
+                    print("Data ditemukan")
+                    print(f"NIP: {found.nip}")
+                    print(f"Nama: {found.nama}")
+                    print(f"Nomor HP: {found.nomorHp}")
+                    print(f"Jenis Kelamin: {found.jenisKelamin}")
+                    print(f"Jabatan: {found.jabatan}")
+                else:
+                    print("Data tidak ditemukan")
+                    
+            elif searchBy == "nama":
+                nama = str(input("Nama data yang dicari: ")).lower()
+                found = absensi.searchByNameDsn(nama)
+
+                if found:
+                    for i in found:
+                        print(f"Nama: {i.nama}")
+                        print(f"NIP: {i.nip}")
+                        print(f"Nomor HP: {i.nomorHp}")
+                        print(f"Jenis Kelamin: {i.jenisKelamin}")
+                        print(f"Jabatan: {i.jabatan}")
+                else:
+                    print("Data tidak ditemukan")
+    
+    elif op == 3:
+        print("Pilih data yang ingin diurutkan:")
+        print("1. Mahasiswa")
+        print("2. Dosen")
+        dataOption = int(input("Pilihan ( 1 / 2 ): "))
+        
+        if dataOption == 1:
+            print("Pilih cara pengurutan mahasiswa:")
+            print("1. Berdasarkan NIM")
+            print("2. Berdasarkan Nama")
+            print("3. Berdasarkan Jurusan")
+            sortOption = int(input("Pilihan ( 1 / 2 / 3 ): "))
+            absensi.sortedByMhs(sortOption)
+            print("Data mahasiswa berhasil diurutkan.")
+
+        elif dataOption == 2:
+            print("Pilih cara pengurutan dosen:")
+            print("1. Berdasarkan NIP")
+            print("2. Berdasarkan Nama")
+            sortOption = int(input("Pilihan ( 1 / 2 ): "))
+            absensi.sortedByDsn(sortOption)
+            print("Data dosen berhasil diurutkan.")
+    
+    elif op == 4:
+        nim = str(input("NIM: "))
+        nama = str(input("Nama: ")).lower()
+        jenisKelamin = str(input("Jenis Kelamin ( L / P ): ")).lower()
+        nomorHp = str(input("Nomor HP: ")).lower()
+        kelas = str(input("Kelas: ")).lower()
+        jam = str(input("Jam: ")).lower()
+
+        mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas, jam)
+        absensi.mhs.append(mhs)
+
+        print(f"Mahasiswa {nama} berhasil ditambahkan!")
+    
+    elif op == 5:
+        nip = str(input("NIP: "))
+        nama = str(input("Nama: "))
+        jenisKelamin = str(input("Jenis Kelamin ( L / P ): "))
+        nomorHp = str(input("Nomor HP: "))
+        jabatan = str(input("Jabatan: "))
+
+        dsn = Dsn(nip, nama, jenisKelamin, nomorHp, jabatan)
+        absensi.dsn.append(dsn)
+
+        print(f"Dosen {nama} berhasil ditambahkan!")
+    
+    elif op == 6:
+        print("Thank you.")
+        break

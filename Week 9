@@ -1,11 +1,88 @@
 ### ==== Start of Other stuff ==== ###
+import os 
 
+def cls():
+    if os.name == 'nt':  
+        os.system('cls')
+    else:
+        os.system('clear')
 
 ### ==== End of Other stuff ==== ###
 
 
 ### ==== Start of Input Handle ==== ###
 
+def checkCodeValidity(kode):
+    if len(kode) == 0 or kode.count(" ") == len(kode):
+        raise ValueError("Kode tidak boleh kosong")
+        
+    if len(kode) != 9:
+        raise ValueError("Kode harus memiliki 9 angka")
+    
+    if int(kode[0:2]) > 24:
+        raise ValueError("Kode tahun angkatan tidak valid")
+    
+    if kode[2:5] not in ["111", "112", "113", "211", "212"]:
+        raise ValueError(f"Kode jurusan tidak valid")
+        
+    num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+    
+    for i in kode:
+        if i not in num:
+            raise ValueError(f"Kode hanya boleh berupa angka")
+            
+    return True
+
+def checkNameValidity(nama):
+    letters = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 
+    'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 
+    'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z']
+        
+    if len(nama) == 0 or nama.count(" ") == len(nama):
+        raise ValueError("Nama tidak boleh kosong")
+        
+    for i in nama:
+        if i not in letters and i != " ":
+            raise ValueError("Nama hanya boleh berupa huruf dan spasi")
+            
+    return True
+
+def checkGenderValidity (jenisKelamin):
+    if jenisKelamin != 'L' or jenisKelamin != 'P':
+        raise ValueError("Jenis kelamin hanya boleh berupa P atau L")
+
+    return True
+
+def checkPhoneNumValidity (nomorHp):
+    if len(nomorHp) == 0 or nomorHp.count(" ") == len(nomorHp):
+        raise ValueError("Nomor HP tidak boleh kosong")
+    
+    num = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
+
+    if nomorHp[0] != '+':
+        raise ValueError("Nomor HP harus berawal dengan tanda '+'")
+                
+    nomorHpLength = len(nomorHp)
+    if nomorHpLength < 8 or nomorHpLength > 15:
+        raise ValueError("Nomor HP hanya boleh terdiri dari 8 - 12 karakter")
+        
+    for i in range (1, nomorHpLength):
+        if nomorHp[i] not in num and nomorHp[i] != " ":
+            raise ValueError("Nomor HP hanya boleh terdiri dari nomor dan spasi")
+            
+    return True
+
+def checkClassValidity(kelas):
+    if kelas != "A" or kelas != "B" or kelas != "C":
+        raise ValueError("Kelas hanya ada A / B / C")
+
+    return True
+
+def checkTimeValidity(jam):
+    if jam != "sore" or jam != "pagi";
+        raise ValueError("Hanya tersedia opsi Pagi dan Sore")
+
+    return True
 
 ### ==== End of Input Handle ==== ###
 
@@ -234,29 +311,82 @@ while True:
         dataOption = int(input("Pilihan ( 1 / 2 ): "))
         
         if dataOption == 1:
-            print("Pilih cara pengurutan mahasiswa:")
-            print("1. Berdasarkan NIM")
-            print("2. Berdasarkan Nama")
-            print("3. Berdasarkan Jurusan")
+            print("Cara pengurutan mahasiswa:")
+            print("1. NIM")
+            print("2. Nama")
+            print("3. Jurusan")
             sortOption = int(input("Pilihan ( 1 / 2 / 3 ): "))
             absensi.sortedByMhs(sortOption)
             print("Data mahasiswa berhasil diurutkan.")
 
         elif dataOption == 2:
-            print("Pilih cara pengurutan dosen:")
-            print("1. Berdasarkan NIP")
-            print("2. Berdasarkan Nama")
+            print("Cara pengurutan dosen:")
+            print("1. NIP")
+            print("2. Nama")
             sortOption = int(input("Pilihan ( 1 / 2 ): "))
             absensi.sortedByDsn(sortOption)
             print("Data dosen berhasil diurutkan.")
     
     elif op == 4:
-        nim = str(input("NIM: "))
-        nama = str(input("Nama: ")).lower()
-        jenisKelamin = str(input("Jenis Kelamin ( L / P ): ")).lower()
-        nomorHp = str(input("Nomor HP: ")).lower()
-        kelas = str(input("Kelas: ")).lower()
-        jam = str(input("Jam: ")).lower()
+        nim = None
+        nimValid = False
+        while not nimValid:
+            try:
+                nim = str(input("NIM: "))
+                nimValid = checkCodeValidity(nim)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
+        nama = None
+        nameValid = False
+        while not nameValid:
+            try:
+                nama = str(input("Nama: ")).lower()
+                nameValid = checkNameValidity(nama)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
+        jenisKelamin = None
+        genderValid = False
+        while note genderValid:
+            try:
+                jenisKelamin = str(input("Jenis Kelamin ( L / P ): ")).upper()
+                genderValid = checkGenderValidity(jenisKelamin)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
+        nomorHp = None
+        phoneNumValid = False
+        while not genderValid:
+            try:
+                nomorHp = str(input("Nomor HP: "))
+                phoneNumValid = checkGenderValidity(nomorHp)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
+        kelas = None
+        classValid = False
+        while not classValid:
+            try:
+                kelas = str(input("Kelas: ")).upper()
+                classValid = checkClassValidity(kelas)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
+        jam = None
+        timeValid = False
+        while not timeValid:
+            try:
+                jam = str(input("Jam: ")).lower()
+                timeValid = checkTimeValidity(jam) 
+
+            except ValueError as err:
+                print(f"Error: {err}")
 
         mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas, jam)
         absensi.mhs.append(mhs)
@@ -264,10 +394,47 @@ while True:
         print(f"Mahasiswa {nama} berhasil ditambahkan!")
     
     elif op == 5:
-        nip = str(input("NIP: "))
-        nama = str(input("Nama: "))
-        jenisKelamin = str(input("Jenis Kelamin ( L / P ): "))
-        nomorHp = str(input("Nomor HP: "))
+        nip = None
+        nipValid = False
+        while not nimValid:
+            try:
+                nip = str(input("NIP: "))
+                nipValid = checkCodeValidity(nip)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
+        
+        nama = None
+        nameValid = False
+        while not nameValid:
+            try:
+                nama = str(input("Nama: ")).lower()
+                nameValid = checkNameValidity(nama)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
+        jenisKelamin = None
+        genderValid = False
+        while note genderValid:
+            try:
+                jenisKelamin = str(input("Jenis Kelamin ( L / P ): ")).upper()
+                genderValid = checkGenderValidity(jenisKelamin)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
+        nomorHp = None
+        phoneNumValid = False
+        while not genderValid:
+            try:
+                nomorHp = str(input("Nomor HP: "))
+                phoneNumValid = checkGenderValidity(nomorHp)
+
+            except ValueError as err:
+                print(f"Error: {err}")
+
         jabatan = str(input("Jabatan: "))
 
         dsn = Dsn(nip, nama, jenisKelamin, nomorHp, jabatan)

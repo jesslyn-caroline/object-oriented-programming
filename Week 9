@@ -6,6 +6,7 @@ class Mhs:
         self.nomorHp = nomorHp
         self.kelas = kelas
         self.jam = jam
+        self.jurusan = "IF" if nim[2:5] == "111" else "TI" if nim[2:5] == "112" else "SI" if nim[2:5] == "113" else "MN" if nim[2:5] == "211" else "AK"
         
 class Dsn:
     def __init__ (self, nip, nama, jenisKelamin, nomorHp, jabatan):
@@ -29,4 +30,15 @@ class Absensi:
             print("Belum ada mahasiswa yang hadir")
         else:
             for i in self.mhs:
+                print(f"[ {i.nim} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jurusan}-{i.kelas.title()} {i.jam.title()} ]")
                 
+        print()
+        print()
+        
+        print("Daftar Dosen yang hadir")
+        print("="*40)
+        if len(self.dsn) == 0:
+            print("Belum ada dosen yang hadir")
+        else:
+            for i in self.dsn:
+                print(f"[ {i.nip} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jabatan.title() ]")

@@ -68,3 +68,37 @@ class Absensi:
                 found.append(i)
         
         return found
+    
+    def sortedByMhs (self, num):
+        if num == 1:
+            self.strategyMhs = SortedByNim()
+        elif num == 2:
+            self.strategyMhs = SortedByNama()
+        elif num == 3:
+            self.strategyMhs = SortedByJurusan()
+        
+        self.mhs = self.strategyMhs.sorting(data)
+    
+    def sortedByDsn (self, num): 
+        if num == 1:
+            self.strategyDsn = SortedByNip()
+        elif num == 2:
+            self.strategyDsn = SortedByNama()
+        
+        self.dsn = self.strategyDsn.sorting(data)
+
+class SortedByNim:
+    def sorting (self, data):
+        return sorted(data, key:lambda x: x.nim)
+        
+class SortedByNama:
+    def sorting (self, data):
+        return sorted(data, key:lambda x: x.nama)
+
+class SortedByJurusan:
+    def sorting (self, data):
+        return sorted(data, key:lambda x: x.jurusan)
+
+class SortedByNip:
+    def sorting (self, data):
+        return sorted(data, key:lambda x: x.nip)

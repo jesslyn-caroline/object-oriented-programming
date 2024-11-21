@@ -236,6 +236,7 @@ class GetSum:
 absensi = Absensi()
 
 while True:
+    cls()
     print("Menu")
     print("="*30)
     print("1. Lihat Absensi")
@@ -246,7 +247,8 @@ while True:
     print("6. Exit")
     
     op = int(input("Pilihan menu ( 1 / 2 / 3 / 4 / 5 / 6 ):"))
-    
+
+    cls()
     if op == 1:
         absensi.printAbsensi()
     
@@ -454,3 +456,5 @@ while True:
     elif op == 6:
         print("Thank you.")
         break
+
+    test = str(input("[ENTER] to continue"))

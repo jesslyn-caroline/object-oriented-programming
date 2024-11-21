@@ -1,3 +1,17 @@
+### ==== Start of Other stuff ==== ###
+
+
+### ==== End of Other stuff ==== ###
+
+
+### ==== Start of Input Handle ==== ###
+
+
+### ==== End of Input Handle ==== ###
+
+
+### ==== Start of Mhs and Dsn Class ==== ###
+
 class Mhs:
     def __init__ (self, nim, nama, jenisKelamin, nomorHp, kelas, jam):
         self.nim = nim
@@ -17,8 +31,11 @@ class Dsn:
         self.nomorHp = nomorHp
         self.jabatan = jabatan
         self.As = "dsn"
-        
-        
+
+### ==== End of Mhs and Dsn Class ==== ###       
+
+
+### ==== Start of Absensi Class ==== ###
 class Absensi:
     def __init__ (self, strategyMhs = False, strategyDsn = False):
         self.mhs = []
@@ -101,6 +118,11 @@ class Absensi:
         
         self.dsn = self.strategyDsn.sorting(self.dsn)
 
+### ==== End of Absensi Class ==== ###
+
+
+### ==== Start of Strategy Class ==== ###
+
 class SortedByNim:
     def sorting (self, data):
         return sorted(data, key=lambda x: x.nim)
@@ -121,8 +143,10 @@ class GetSum:
     def getSum(self, data):
         return len(data)
 
+### ==== Start of Strategy Class ==== ###
 
-### Main Program ###
+
+### ==== Main Program === ###
 absensi = Absensi()
 
 while True:

@@ -1,1 +1,16 @@
-
+class Mhs:
+    def __init__ (self, nim, nama, jenisKelamin, nomorHp, kelas, jam):
+        self.nim = nim
+        self.nama = nama
+        self.jenisKelamin = jenisKelamin
+        self.nomorHp = nomorHp
+        self.kelas = kelas
+        self.jam = jam
+        
+class Dsn:
+    def __init__ (self, nip, nama, jenisKelamin, nomorHp, jabatan):
+        self.nip = nip
+        self.nama = nama
+        self.jenisKelamin = jenisKelamin
+        self.nomorHp = nomorHp
+        self.jabatan = jabatan

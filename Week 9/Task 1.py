@@ -299,7 +299,7 @@ while True:
                     
             elif searchBy == "nama":
                 nama = str(input("Nama data yang dicari: ")).lower()
-                found = absensi.searchByNamaMhs(nama)
+                found = absensi.searchByNameMhs(nama)
 
                 if found:
                     for i in found:
@@ -319,11 +319,13 @@ while True:
 
                 if found:
                     print("Data ditemukan")
+                    print("="*40)
                     print(f"NIP: {found.nip}")
                     print(f"Nama: {found.nama}")
                     print(f"Nomor HP: {found.nomorHp}")
                     print(f"Jenis Kelamin: {found.jenisKelamin}")
                     print(f"Jabatan: {found.jabatan}")
+                    print("="*40)
                 else:
                     print("Data tidak ditemukan")
                     
@@ -333,11 +335,14 @@ while True:
 
                 if found:
                     for i in found:
+                        print("Data ditemukan")
+                        print("="*40)
                         print(f"Nama: {i.nama}")
                         print(f"NIP: {i.nip}")
                         print(f"Nomor HP: {i.nomorHp}")
                         print(f"Jenis Kelamin: {i.jenisKelamin}")
                         print(f"Jabatan: {i.jabatan}")
+                        print("="*40)
                 else:
                     print("Data tidak ditemukan")
     

@@ -135,7 +135,35 @@ class Dsn:
 ### ==== End of Mhs and Dsn Class ==== ###       
 
 
-### ==== Start of Absensi Class ==== ###
+### ==== Start Of Singleton Pattern ==== ###
+
+class AbsensiList:
+    absensiList = []
+
+    def __init__ (self):
+        self.absensiList = self.absensiList
+
+class Singleton(AbsensiList): #Singleton 
+    _instance = None
+
+    def __new__ (cls, data):
+        if not cls._instance:
+            cls._instance = super(Singleton, cls).__new__(cls)
+
+        return cls._instance
+
+    def __init__ (self, data):
+        AbsensiList.__init__(self)
+        self.absensiList.append(data)
+    
+    def getData (self):
+        return self.absensiList
+
+### ==== End Of Singleton Pattern ==== ###
+
+
+### ==== Start of Template Class ==== ###
+
 class Template:
     def mhsList (self):
         pass
@@ -172,110 +200,88 @@ class Template:
         print(f"Total Kehadiran: {self.getSumAll()}")
 
 
-### ==== Start Of Singleton Pattern ==== ###
+### ==== End of Template Class ==== ###
 
-class AbsensiList:
-    absensiList = []
 
-    def __init__ (self):
-        self.absensiList = self.absensiList
+### ==== Start of Absensi Class ==== ###
 
-class Singleton(AbsensiList): #Singleton 
-    _instance = None
+class Absensi (Template):
+    def __init__ (self, absensiList, strategyMhs = False, strategyDsn = False):
+        self.mhs = [i for i in absensiList if i.As == "mhs"]
+        self.dsn = [i for i in absensiList if i.As == "dsn"]
+        self.strategyMhs = strategyMhs
+        self.strategyDsn = strategyDsn
 
-    def __new__ (cls, data):
-        if not cls._instance:
-            cls._instance = super(Singleton, cls).__new__(cls)
+    def mhsList (self):
+        if len(self.mhs) == 0:
+            print("Belum ada mahasiswa yang hadir")
+        else:
+            for i in self.mhs:
+                print(f"[ {i.nim} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jurusan}-{i.kelas.title()} {i.jam.title()} ]")
 
-        return cls._instance
+    def dsnList (self):
+        if len(self.dsn) == 0:
+            print("Belum ada dosen yang hadir")
+        else:
+            for i in self.dsn:
+                print(f"[ {i.nip} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jabatan.title()} ]")
 
-    def __init__ (self, data):
-        AbsensiList.__init__(self)
-        self.absensiList.append(data)
+    def getSumMhs (self):
+        return len(self.mhs)
     
-    def __str__ (self):
-        return str(self.absensiList)
-
-### ==== End Of Singleton Pattern ==== ###
-
-# class Absensi (Singleton, Template):
-#     def __init__ (self, strategyMhs = False, strategyDsn = False):
-#         Singleton.__init__(self)
-#         self.mhs = [i for i in self.absensiList if i.As == "mhs"]
-#         self.dsn = [i for i in self.absensiList if i.As == "dsn"]
-#         self.strategyMhs = strategyMhs
-#         self.strategyDsn = strategyDsn
-
-#     def mhsList (self):
-#         if len(self.mhs) == 0:
-#             print("Belum ada mahasiswa yang hadir")
-#         else:
-#             for i in self.mhs:
-#                 print(f"[ {i.nim} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jurusan}-{i.kelas.title()} {i.jam.title()} ]")
-
-#     def dsnList (self):
-#         if len(self.dsn) == 0:
-#             print("Belum ada dosen yang hadir")
-#         else:
-#             for i in self.dsn:
-#                 print(f"[ {i.nip} ] - [ {i.nama.title()} ] - [ {i.jenisKelamin.title()} ] - [ {i.nomorHp} ] - [ {i.jabatan.title()} ]")
-
-#     def getSumMhs (self):
-#         return len(self.mhs)
+    def getSumDsn (self):
+        return len(self.dsn)
     
-#     def getSumDsn (self):
-#         return len(self.dsn)
-    
-#     def getSumAll (self):
-#         return len(self.dsn) + len(self.mhs)
+    def getSumAll (self):
+        return len(self.dsn) + len(self.mhs)
         
-#     def searchByNimMhs (self, nim):
-#         for i in self.mhs:
-#             if i.nim == nim:
-#                 return i
+    def searchByNimMhs (self, nim):
+        for i in self.mhs:
+            if i.nim == nim:
+                return i
 
-#         return False
+        return False
     
-#     def searchByNameMhs (self, nama):
-#         found = []
-#         for i in self.mhs:
-#             if i.nama == nama:
-#                 found.append(i)
+    def searchByNameMhs (self, nama):
+        found = []
+        for i in self.mhs:
+            if i.nama == nama:
+                found.append(i)
         
-#         return found
+        return found
 
-#     def searchByNipDsn (self, nip):
-#         for i in self.dsn:
-#             if i.nip == nip:
-#                 return i
+    def searchByNipDsn (self, nip):
+        for i in self.dsn:
+            if i.nip == nip:
+                return i
 
-#         return False
+        return False
     
-#     def searchByNameDsn (self, nama):
-#         found = []
-#         for i in self.dsn:
-#             if i.nama == nama:
-#                 found.append(i)
+    def searchByNameDsn (self, nama):
+        found = []
+        for i in self.dsn:
+            if i.nama == nama:
+                found.append(i)
         
-#         return found
+        return found
 
-#     def sortedByMhs (self, num):
-#         if num == 1:
-#             self.strategyMhs = SortedByNim()
-#         elif num == 2:
-#             self.strategyMhs = SortedByNama()
-#         elif num == 3:
-#             self.strategyMhs = SortedByJurusan()
+    def sortedByMhs (self, num):
+        if num == 1:
+            self.strategyMhs = SortedByNim()
+        elif num == 2:
+            self.strategyMhs = SortedByNama()
+        elif num == 3:
+            self.strategyMhs = SortedByJurusan()
         
-#         self.mhs = self.strategyMhs.sorting(self.mhs)
+        self.mhs = self.strategyMhs.sorting(self.mhs)
     
-#     def sortedByDsn (self, num): 
-#         if num == 1:
-#             self.strategyDsn = SortedByNip()
-#         elif num == 2:
-#             self.strategyDsn = SortedByNama()
+    def sortedByDsn (self, num): 
+        if num == 1:
+            self.strategyDsn = SortedByNip()
+        elif num == 2:
+            self.strategyDsn = SortedByNama()
         
-#         self.dsn = self.strategyDsn.sorting(self.dsn)
+        self.dsn = self.strategyDsn.sorting(self.dsn)
 
 ### ==== End of Absensi Class ==== ###
 
@@ -304,7 +310,7 @@ class SortedByNip:
 ### ==== Main Program === ###
 
 data = None
-# absensi = Absensi()
+absensi = Absensi([])
 
 while True:
     cls()
@@ -477,13 +483,14 @@ while True:
 
         mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas, jam)
         
-        # found = absensi.searchByNimMhs(nim)
-        # if found:
-        #     print("Mahasiswa tersebut sudah pernah ditambahkan")
-        # else:
-        data = Singleton(mhs)
-        print(data)
-        # print(f"Mahasiswa {nama.title()} berhasil ditambahkan!")
+        found = absensi.searchByNimMhs(nim)
+        if found:
+            print("Mahasiswa tersebut sudah pernah ditambahkan")
+        else:
+            data = Singleton(mhs)
+            data = data.getData()
+            absensi = Absensi(data) # Updating the data in Absensi Class, which data is from Singleton
+            print(f"Mahasiswa {nama.title()} berhasil ditambahkan!")
     
     elif op == 5:
         nip = None
@@ -536,6 +543,8 @@ while True:
             print("Dosen tersebut sudah pernah ditambahkan")
         else:
             data = Singleton(dsn)
+            data = data.getData()
+            absensi = Absensi(data)
             print(f"Dosen {nama.title()} berhasil ditambahkan!")
     
     elif op == 6:

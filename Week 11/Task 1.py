@@ -106,6 +106,9 @@ class Parent:
     
     def getAbsensi (self):
         return self.mhs
+    
+    def getDsn (self):
+        return self.dsn
 
 class ClassA(Parent):
     def __init__ (self):
@@ -126,23 +129,32 @@ class ClassC(Parent):
 
 class Template:
     def absensiTable(self, absensi, dsn, option):
-        print(f"="*40)
-        print(f"{'Kelas': >20} {option: <20}")
-        print(f"="*40)
+        print(f"="*80)
+        print(f"{'Kelas': >40} {option: <40}")
+        print(f"="*80)
         print()
         if len(absensi) == 0:
             print(f"Belum ada mahasiswa yang hadir")
         else:
-            table = PrettyTable(["NIM", "Nama", "Nomor HP", "Kelas"])
+            table = PrettyTable()
+            table.field_names = ["NIM", "Nama", "Nomor HP", "Kelas"]
             for i in absensi:
-                print([i.nim, i.nama, i.nomorHp, i.kelas])
-            print(f"="*40)
+                table.add_row([i.nim, i.nama, i.nomorHp, i.kelas])
+            
+            print(table)
+            print()
+            print(f"="*80)
             
         print()
         print(f"Dosen: {dsn}")
+        print()
+        print()
     
-    def totalMhs (self, size):
-        print(f"Total Mahasiswa yang hadir: {size}")
+    def totalMhs (self, size, kelas = None):
+        if kelas is None:
+            print(f"Total Mahasiswa yang hadir di kelas A, B, C: {size}")
+        else:
+            print(f"Total Mahasiswa yang hadir di kelas {kelas}: {size}")
 
 ### ==== End of Template Pattern ==== ###
 
@@ -158,35 +170,49 @@ class Facade(Template):
     
     def processA (self):
         absensi = self.A.getAbsensi()
-        self.absensiTable(absensi, self.dsn, "A")
-        self.totalMhs(len(absensi))
+        dsn = self.A.getDsn()
+        self.absensiTable(absensi, dsn, "A")
+        self.totalMhs(len(absensi), "A")
     
     def processB (self):
         absensi = self.B.getAbsensi()
-        self.absensiTable(absensi, self.dsn, "B")
-        self.totalMhs(len(absensi))
+        dsn = self.B.getDsn()
+        self.absensiTable(absensi, dsn, "B")
+        self.totalMhs(len(absensi), "B")
     
     def processC (self):
         absensi = self.C.getAbsensi()
-        self.absensiTable(absensi, self.dsn, "C")
-        self.totalMhs(len(absensi))
+        dsn = self.C.getDsn()
+        self.absensiTable(absensi, dsn, "C")
+        self.totalMhs(len(absensi), "C")
     
     def processAll (self):
         absensiA = self.A.getAbsensi()
-        self.absensiTable(absensiA, self.dsn, "A")
+        dsn = self.A.getDsn()
+        self.absensiTable(absensiA, dsn, "A")
+
         absensiB = self.B.getAbsensi()
-        self.absensiTable(absensiB, self.dsn, "B")
+        dsn = self.B.getDsn()
+        self.absensiTable(absensiB, dsn, "B")
+
         absensiC = self.C.getAbsensi()
-        self.absensiTable(absensiC, self.dsn, "C")
+        dsn = self.C.getDsn()
+        self.absensiTable(absensiC, dsn, "C")
         
         a, b, c = len(absensiA), len(absensiB), len(absensiC)
         total = a + b + c
         
-        self.totalMhs(a)
-        self.totalMhs(b)
-        self.totalMhs(c)
+        self.totalMhs(a, "A")
+        self.totalMhs(b, "B")
+        self.totalMhs(c, "C")
         self.totalMhs(total)
-        
+    
+    def getAll (self):
+        absensiA = self.A.getAbsensi()
+        absensiB = self.B.getAbsensi()
+        absensiC = self.C.getAbsensi()
+
+        return absensiA + absensiB + absensiC
 
 ### ==== End of Facade Class ==== ###
 
@@ -201,11 +227,11 @@ c = ClassC()
 while True:
     cls()
     print(f"Menu")
-    print(f"="*40)
+    print(f"="*80)
     print(f"1. Lihat Absensi")
     print(f"2. Input Absensi")
     print(f"3. Exit")
-    print(f"="*40)
+    print(f"="*80)
     
     optionValid = False
     while not optionValid:
@@ -304,18 +330,28 @@ while True:
                 
         print()
         
-        mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas)
-        if kelas == 'A':
-            a.addToList(mhs)
-            facade.A = a
-        
-        if kelas == 'B':
-            b.addToList(mhs)
-            facade.B = b
-        
-        if kelas == 'C':
-            c.addToList(mhs)
-            facade.C = c
+        found = False
+
+        absensi = facade.getAll()
+        for i in absensi:
+            if i.nim == nim:
+                found = True
+
+        if found:
+            print(f"Mahasiswa tersebut sudah pernah ada")
+        else:
+            mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas)
+            if kelas == 'A':
+                a.addToList(mhs)
+                facade.A = a
+            
+            if kelas == 'B':
+                b.addToList(mhs)
+                facade.B = b
+            
+            if kelas == 'C':
+                c.addToList(mhs)
+                facade.C = c
         
     elif op == 3:
         print(f"Thank you!")

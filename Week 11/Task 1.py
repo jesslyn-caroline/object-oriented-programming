@@ -219,142 +219,146 @@ class Facade(Template):
 
 ### ==== Main Program ==== ###
 
-facade = Facade()
-a = ClassA()
-b = ClassB()
-c = ClassC()
+if __name__ == "__main__":
+    facade = Facade()
+    a = ClassA()
+    b = ClassB()
+    c = ClassC()
 
-while True:
-    cls()
-    print(f"Menu")
-    print(f"="*80)
-    print(f"1. Lihat Absensi")
-    print(f"2. Input Absensi")
-    print(f"3. Exit")
-    print(f"="*80)
-    
-    optionValid = False
-    while not optionValid:
-        try:
-            op = input("Pilih menu ( 1 / 2 / 3 ): ")
-            
-            if op.count(" ") == len(op):
-                raise ValueError("Pilihan tidak boleh kosong.")
-            if not op.isnumeric():
-                raise ValueError("Pilihan harus berupa angka.")
-            if op not in ["1", "2", "3"]:
-                raise ValueError("Pilihan hanya boleh 1 / 2 / 3")
-            
-            optionValid = True
+    while True:
+        cls()
+        print(f"Menu")
+        print(f"="*80)
+        print(f"1. Lihat Absensi")
+        print(f"2. Input Absensi")
+        print(f"3. Exit")
+        print(f"="*80)
         
-        except ValueError as err:
-            print(f"Invalid input: {err}")
-        
-        print()
-    
-    op = int(op)
-    cls()
-    if op == 1:
-        kelasValid = False
-        while not kelasValid:
+        optionValid = False
+        while not optionValid:
             try:
-                kelas = input(f"Absensi kelas mana yang mau dilihat ( A / B / C / ALL): ").upper()
-                if kelas not in ["A", "B", "C", "ALL"]:
-                    raise ValueError("Hanya ada opsi A / B / C / ALL")
+                op = input("Pilih menu ( 1 / 2 / 3 ): ")
                 
-                kelasValid = True
-            
-            except ValueError as err:
-                print(f"Invalid input: {err}")
-        
-        print()
-        
-        if kelas == "A": facade.processA()
-        if kelas == "B": facade.processB()
-        if kelas == "C": facade.processC()
-        if kelas == "ALL": facade.processAll()
-    
-    elif op == 2:
-        nimValid = False
-        while not nimValid:
-            try:
-                nim = input("NIM: ")
-                nimValid = checkNimValidity(nim)
-            
-            except ValueError as err:
-                print(f"Invalid input: {err}")
-        
-        print()
-        
-        nameValid = False
-        while not nameValid:
-            try:
-                nama = input("Nama: ").lower()
-                nameValid = checkNameValidity(nama)
-            
-            except ValueError as err:
-                print(f"Invalid input: {err}")
-        
-        print()
-        
-        phoneNumValid = False
-        while not phoneNumValid:
-            try:
-                nomorHp = input("Nomor HP: ")
-                phoneNumValid = checkPhoneNumValidity(nomorHp)
-            
-            except ValueError as err:
-                print(f"Invalid input: {err}")
-        
-        print()
-        
-        genderValid = False
-        while not genderValid:
-            try:
-                jenisKelamin = input("Jenis Kelamin: ").upper()
-                genderValid = checkGenderValidity(jenisKelamin)
-            
-            except ValueError as err:
-                print(f"Invalid input: {err}")
-        
-        print()
-        
-        kelasValid = False
-        while not kelasValid:
-            try:
-                kelas = input("Kelas ( A / B / C ): ").upper()
-                kelasValid = checkClassValidity(kelas)
+                if op.count(" ") == len(op):
+                    raise ValueError("Pilihan tidak boleh kosong.")
+                if not op.isnumeric():
+                    raise ValueError("Pilihan harus berupa angka.")
+                if op not in ["1", "2", "3"]:
+                    raise ValueError("Pilihan hanya boleh 1 / 2 / 3")
                 
+                optionValid = True
+            
             except ValueError as err:
-                print(f"ValueError: {err}")
-                
-        print()
+                print(f"Invalid input: {err}")
+            
+            print()
         
-        found = False
+        op = int(op)
+        cls()
+        if op == 1:
+            kelasValid = False
+            while not kelasValid:
+                try:
+                    kelas = input(f"Absensi kelas mana yang mau dilihat ( A / B / C / ALL): ").upper()
+                    if kelas not in ["A", "B", "C", "ALL"]:
+                        raise ValueError("Hanya ada opsi A / B / C / ALL")
+                    
+                    kelasValid = True
+                
+                except ValueError as err:
+                    print(f"Invalid input: {err}")
+            
+            print()
+            
+            if kelas == "A": facade.processA()
+            if kelas == "B": facade.processB()
+            if kelas == "C": facade.processC()
+            if kelas == "ALL": facade.processAll()
+        
+        elif op == 2:
+            nimValid = False
+            while not nimValid:
+                try:
+                    nim = input("NIM: ")
+                    nimValid = checkNimValidity(nim)
+                
+                except ValueError as err:
+                    print(f"Invalid input: {err}")
+            
+            print()
+            
+            nameValid = False
+            while not nameValid:
+                try:
+                    nama = input("Nama: ").lower()
+                    nameValid = checkNameValidity(nama)
+                
+                except ValueError as err:
+                    print(f"Invalid input: {err}")
+            
+            print()
+            
+            phoneNumValid = False
+            while not phoneNumValid:
+                try:
+                    nomorHp = input("Nomor HP: ")
+                    phoneNumValid = checkPhoneNumValidity(nomorHp)
+                
+                except ValueError as err:
+                    print(f"Invalid input: {err}")
+            
+            print()
+            
+            genderValid = False
+            while not genderValid:
+                try:
+                    jenisKelamin = input("Jenis Kelamin: ").upper()
+                    genderValid = checkGenderValidity(jenisKelamin)
+                
+                except ValueError as err:
+                    print(f"Invalid input: {err}")
+            
+            print()
+            
+            kelasValid = False
+            while not kelasValid:
+                try:
+                    kelas = input("Kelas ( A / B / C ): ").upper()
+                    kelasValid = checkClassValidity(kelas)
+                    
+                except ValueError as err:
+                    print(f"ValueError: {err}")
+                    
+            print()
+            
+            found = False
 
-        absensi = facade.getAll()
-        for i in absensi:
-            if i.nim == nim:
-                found = True
+            absensi = facade.getAll()
+            for i in absensi:
+                if i.nim == nim:
+                    found = True
 
-        if found:
-            print(f"Mahasiswa tersebut sudah pernah ada")
-        else:
-            mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas)
-            if kelas == 'A':
-                a.addToList(mhs)
-                facade.A = a
+            if found:
+                print(f"Mahasiswa tersebut sudah pernah ada")
+            else:
+                mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas)
+                if kelas == 'A' and nim[7:] == '11':
+                    a.addToList(mhs)
+                    facade.A = a
+
+                elif kelas == 'B' and nim[7:] == '12':
+                    b.addToList(mhs)
+                    facade.B = b
+                
+                elif kelas == 'C' and nim[7:] == '13':
+                    c.addToList(mhs)
+                    facade.C = c
+                
+                else:
+                    print("Mahasiswa tersebut tidak bisa ditambahkan ke dalam kelas")
             
-            if kelas == 'B':
-                b.addToList(mhs)
-                facade.B = b
-            
-            if kelas == 'C':
-                c.addToList(mhs)
-                facade.C = c
+        elif op == 3:
+            print(f"Thank you!")
+            break
         
-    elif op == 3:
-        print(f"Thank you!")
-        break
-    
-    any = input("[ Press any button to continue ]")
+        any = input("[ Press any button to continue ]")

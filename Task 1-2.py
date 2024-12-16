@@ -364,7 +364,7 @@ if __name__ == "__main__":
             
             found = paymentHistory.search(nim)
             if found:
-                paymentHistory.addToHistory([found, total / 4])
+                paymentHistory.addToHistory([mhs, int(total / 4)])
                 print("Terima kasih telah membayar")
             else:
                 print("Mahasiswa belum terdaftar")

@@ -157,6 +157,10 @@ def test_lst_5(): # Passed
     removed = lst.removeMhs('231111664')
     assert removed == True
 
+    removed = lst.removeMhs('231111664')
+    total = lst.mhsLength()
+    assert total == 0
+
 def test_crud(): # Not Passed
     lst = Lst()
     mhs = Mhs('231111664', 'Jess', 'B', 'Sore', '+123123123123', 'P')
@@ -173,3 +177,7 @@ def test_crud(): # Not Passed
     removed = lst.removeMhs('231111665')
     assert removed == True # Cause
     # assert removed == False # The correct one
+
+    removed = lst.removeMhs('231111664')
+    total = lst.mhsLength()
+    assert total == 0

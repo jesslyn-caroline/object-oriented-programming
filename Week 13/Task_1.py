@@ -146,7 +146,7 @@ class Lst:
         return len(self.dsn)
     
     def totalLength (self):
-        return len(self.mhs) + len
+        return self.mhsLength() + self.dsnLength()
 
     def searchByNim (self, nim):
         for i in self.mhs:
@@ -199,12 +199,12 @@ class Lst:
         tableMhs = PrettyTable()
         tableMhs.field_names = ["NIM", "Nama", "Kelas", "Jam", "Nomor HP", "Jenis Kelamin", "Jurusan"]
         for i in self.mhs:
-            tableMhs.add_row([i.nim, i.nama, i.kelas, i.jam, i.nomorHp, i.jenisKelamin, i.jurusan])
+            tableMhs.add_row([i.nim, i.nama.title(), i.kelas, i.jam.title(), i.nomorHp, i.jenisKelamin, i.jurusan])
         
         tableDsn = PrettyTable()
         tableDsn.field_names = ["NIP", "Nama", "Jabatan", "Nomor HP", "Jenis Kelamin"]
         for i in self.dsn:
-            tableDsn.add_row([i.nip, i.nama, i.kelas, i.nomorHp, i.jenisKelamin])
+            tableDsn.add_row([i.nip, i.nama.title(), i.jabatan, i.nomorHp, i.jenisKelamin])
         
         mhsLength = self.mhsLength()
         dsnLength = self.dsnLength()
@@ -457,12 +457,12 @@ if __name__ == '__main__':
                         except ValueError as err:
                             print(f"Error: {err}")
                     
-                    found = lst.searchByNamaMhs(nama)
+                    found = lst.searchByNameMhs(nama)
                     if found: 
                         table = PrettyTable()
                         table.field_names = ["NIM", "Nama", "Kelas", "Jam", "Nomor HP", "Jenis Kelamin", "Jurusan"]
                         for i in found:
-                            table.add_row([i.nim, i.nama, i.kelas, i.jam, i.nomorHp, i.jenisKelamin, i.jurusan])
+                            table.add_row([i.nim, i.nama.title(), i.kelas, i.jam.title(), i.nomorHp, i.jenisKelamin, i.jurusan])
                         
                         print(table)
                         
@@ -497,12 +497,12 @@ if __name__ == '__main__':
                         except ValueError as err:
                             print(f"Error: {err}")
                     
-                    found = lst.searchByNamaDsn(nama)
+                    found = lst.searchByNameDsn(nama)
                     if found: 
                         table = PrettyTable()
                         table.field_names = ["NIP", "Nama", "Jabatan", "Nomor HP", "Jenis Kelamin"]
                         for i in found:
-                            table.add_row([i.nip, i.nama, i.kelas, i.nomorHp, i.jenisKelamin])
+                            table.add_row([i.nip, i.nama.title(), i.jabatan, i.nomorHp, i.jenisKelamin])
                         
                         print(table)
                         
@@ -512,4 +512,7 @@ if __name__ == '__main__':
             print("Thank you")
             break
         
+        print()
+        print()
         input("Any button to continue")
+

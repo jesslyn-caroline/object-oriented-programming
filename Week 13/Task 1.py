@@ -379,6 +379,10 @@ if __name__ == '__main__':
                 jabatan = str(input("Jabatan: "))
         
                 dsn = Dsn(nip, nama, jabatan, nomorHp, jenisKelamin)
+                pos = lst.addDsn(dsn)
+                
+                if pos: print('Dosen tersebut berhasil ditambahkan')
+                else: print('Dosen sudah terdaftar sebelumnya')
         
         elif op == '3':
             print('Mencari pengunjung')

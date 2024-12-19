@@ -206,17 +206,23 @@ class Lst:
         for i in self.dsn:
             tableDsn.add_row([i.nip, i.nama, i.kelas, i.nomorHp, i.jenisKelamin])
         
+        mhsLength = self.mhsLength()
+        dsnLength = self.dsnLength()
+        totalLength = self.totalLength()
+
         print(f'Daftar Mahasiswa yang hadir')
-        print(tableMhs)
+        if mhsLength == 0: print('Tidak ada mahasiswa yang hadir')
+        else: print(tableMhs)
         print()
         print()
         print(f'Daftar Dosen yang hadir')
-        print(tableDsn)
+        if dsnLength == 0: print('Tidak ada dosen yang hadir')
+        else: print(tableDsn)
         print()
         print()
-        print(f'Total Mahasiswa yang hadir: {self.mhsLength()}')
-        print(f'Total Dosen yang hadir: {self.dsnLength()}')
-        print(f'Total kehadiran: {self.totalLength()}')
+        print(f'Total Mahasiswa yang hadir: {mhsLength}')
+        print(f'Total Dosen yang hadir: {dsnLength}')
+        print(f'Total kehadiran: {totalLength}')
 
 ### ==== End of Mhs Dsn List Class ==== ###
 

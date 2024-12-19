@@ -124,3 +124,52 @@ def test_lst_4(): # Not Passed
     assert mhs == 5 # Cause
     # assert mhs == 3 # The correct one
     assert dsn == 1
+
+def test_lst_5(): # Passed
+    lst = Lst()
+    mhs = Mhs('231111664', 'Jess', 'C', 'Sore', '+123123123123', 'P')
+    added = lst.addMhs(mhs)
+    mhs = Mhs('231111665', 'Jess', 'C', 'Sore', '+123123123123', 'P')
+    added = lst.addMhs(mhs)
+    mhs = Mhs('231111666', 'Jess', 'C', 'Sore', '+123123123123', 'P')
+    added = lst.addMhs(mhs)
+    mhs = Mhs('231111667', 'Jess', 'C', 'Sore', '+123123123123', 'P')
+    added = lst.addMhs(mhs)
+    mhs = Mhs('231111667', 'Jess', 'C', 'Sore', '+123123123123', 'P')
+    added = lst.addMhs(mhs)
+    dsn = Dsn('231111112', 'Ello', '-', '+12312312312', 'P')
+    added = lst.addDsn(dsn)
+
+    assert len(lst.searchByNameMhs('Jess')) == 4
+
+def test_lst_5(): # Passed
+    lst = Lst()
+    mhs = Mhs('231111664', 'Jess', 'B', 'Sore', '+123123123123', 'P')
+    added = lst.addMhs(mhs)
+    assert added == True
+
+    updated = lst.updateMhs('231111664', 'C')
+    assert updated == True
+
+    found = lst.searchByNim('231111664')
+    assert found.kelas == 'C'
+
+    removed = lst.removeMhs('231111664')
+    assert removed == True
+
+def test_crud(): # Not Passed
+    lst = Lst()
+    mhs = Mhs('231111664', 'Jess', 'B', 'Sore', '+123123123123', 'P')
+    added = lst.addMhs(mhs)
+    assert added == True
+
+    updated = lst.updateMhs('231111664', 'C')
+    assert updated == True 
+
+    found = lst.searchByNim('231111664')
+    assert found.kelas == 'B' # Cause
+    # assert found.kelas == 'C' # The correct one
+
+    removed = lst.removeMhs('231111665')
+    assert removed == True # Cause
+    # assert removed == False # The correct one

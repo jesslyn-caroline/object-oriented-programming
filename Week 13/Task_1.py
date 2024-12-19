@@ -139,6 +139,15 @@ class Lst:
         self.mhs = []
         self.dsn = []
     
+    def mhsLength (self):
+        return len(self.mhs)
+
+    def dsnLength (self):
+        return len(self.dsn)
+    
+    def totalLength (self):
+        return len(self.mhs) + len
+
     def searchByNim (self, nim):
         for i in self.mhs:
             if i.nim == nim:
@@ -205,9 +214,9 @@ class Lst:
         print(tableDsn)
         print()
         print()
-        print(f'Total Mahasiswa yang hadir: {len(self.mhs)}')
-        print(f'Total Dosen yang hadir: {len(self.dsn)}')
-        print(f'Total kehadiran: {len(self.mhs) + len(self.dsn)}')
+        print(f'Total Mahasiswa yang hadir: {self.mhsLength()}')
+        print(f'Total Dosen yang hadir: {self.dsnLength()}')
+        print(f'Total kehadiran: {self.totalLength()}')
 
 ### ==== End of Mhs Dsn List Class ==== ###
 
@@ -256,16 +265,17 @@ if __name__ == '__main__':
             
             optionValid = False
             while not optionValid:
-                op = input('Pilihan opsi ( 1 / 2 ): ')
+                try:
+                    op = input('Pilihan opsi ( 1 / 2 ): ')
+                    
+                    if len(op) == op.count(" "): raise ValueError('Opsi tidak boleh kosong')
+                    if not op.isnumeric(): raise ValueError('Opsi harus berupa angka')
+                    if op not in ['1', '2']: raise ValueError('Opsi yang tersedia hanya 1 / 2')
+                    
+                    optionValid = True
                 
-                if len(op) == op.count(" "): raise ValueError('Opsi tidak boleh kosong')
-                if not op.isnumeric(): raise ValueError('Opsi harus berupa angka')
-                if op not in ['1', '2']: raise ValueError('Opsi yang tersedia hanya 1 / 2')
-                
-                optionValid = True
-            
-            except ValueError as err:
-                print(f'Invalid Input: {err}')
+                except ValueError as err:
+                    print(f'Invalid Input: {err}')
             
             
             if op == '1':
@@ -333,7 +343,7 @@ if __name__ == '__main__':
                 pos = lst.addMhs(mhs)
                 
                 if pos: print('Mahasiswa tersebut berhasil ditambahkan')
-                else print('Mahasiswa sudah terdaftar sebelumnya')
+                else: print('Mahasiswa sudah terdaftar sebelumnya')
             
             elif op == '2':
                 nip = None
@@ -393,16 +403,17 @@ if __name__ == '__main__':
             
             optionValid = False
             while not optionValid:
-                op = input('Pilihan opsi ( 1 / 2 ): ')
+                try:
+                    op = input('Pilihan opsi ( 1 / 2 ): ')
+                    
+                    if len(op) == op.count(" "): raise ValueError('Opsi tidak boleh kosong')
+                    if not op.isnumeric(): raise ValueError('Opsi harus berupa angka')
+                    if op not in ['1', '2']: raise ValueError('Opsi yang tersedia hanya 1 / 2')
+                    
+                    optionValid = True
                 
-                if len(op) == op.count(" "): raise ValueError('Opsi tidak boleh kosong')
-                if not op.isnumeric(): raise ValueError('Opsi harus berupa angka')
-                if op not in ['1', '2']: raise ValueError('Opsi yang tersedia hanya 1 / 2')
-                
-                optionValid = True
-            
-            except ValueError as err:
-                print(f'Invalid Input: {err}')
+                except ValueError as err:
+                    print(f'Invalid Input: {err}')
             
             print()
             print('-' * 50)
@@ -484,7 +495,7 @@ if __name__ == '__main__':
                     if found: 
                         table = PrettyTable()
                         table.field_names = ["NIP", "Nama", "Jabatan", "Nomor HP", "Jenis Kelamin"]
-                        for i in self.dsn:
+                        for i in found:
                             table.add_row([i.nip, i.nama, i.kelas, i.nomorHp, i.jenisKelamin])
                         
                         print(table)

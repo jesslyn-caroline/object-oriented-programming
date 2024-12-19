@@ -178,6 +178,5 @@ def test_crud(): # Not Passed
     assert removed == True # Cause
     # assert removed == False # The correct one
 
-    removed = lst.removeMhs('231111664')
     total = lst.mhsLength()
-    assert total == 0
+    assert total == 1

@@ -323,10 +323,12 @@ def addVisitorMhs():
 
 def addVisitorDsn():
     nip = inputHandle("NIP", checkCodeValidity)
+    nama = inputHandle("Nama", checkNameValidity)
     jenisKelamin = inputHandle("Jenis Kelamin", checkGenderValidity)
     nomorHp = inputHandle("Nomor HP", checkPhoneNumValidity)
     jabatan = input("Jabatan: ")
     
+    nama = nama.lower()
     jenisKelamin = jenisKelamin.upper()
     
     pos = lst.searchByNip(nip)

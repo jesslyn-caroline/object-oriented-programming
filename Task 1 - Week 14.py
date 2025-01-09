@@ -1,5 +1,5 @@
 import os
-# from prettytable import PrettyTable
+from prettytable import PrettyTable
 
 def cls():
     if os.name == 'nt': _ = os.system('cls')
@@ -126,85 +126,105 @@ class Mhs (Parent):
         self.kelas = kelas
         self.jam = jam
         self.jurusan = 'IF' if nim[2:5] == '111' else 'TI' if nim[2:5] == '112' else 'SI' if nim[2:5] == '113' else 'MN' if nim[2:5] == '211' else 'AK'
-
+    
+    def row (self):
+        return [self.nim, self.nama, self.kelas, self.jam, self.nomorHp, self.jenisKelamin, self.jurusan]
+    
 class Dsn (Parent):
     def __init__ (self, nip, nama, jabatan, nomorHp, jenisKelamin):
         super().__init__ (nama, nomorHp, jenisKelamin, 'dsn')
         self.nip = nip
         self.jabatan = jabatan
+    
+    def row (self):
+        return [self.nip, self.nama, self.jabatan, self.nomorHp, self.jenisKelamin]
 
 ### ==== End of Mhs Dsn Class ==== ###
 
 
 ### ==== Start of Mhs Dsn List Class ==== ###
-
-class Lst:
+class ParentList:
     def __init__ (self):
-        self.mhs = []
-        self.dsn = []
-
-    def mhsLength (self):
-        return len(self.mhs)
-
-    def dsnLength (self):
-        return len(self.dsn)
-
-    def totalLength (self):
-        return self.mhsLength() + self.dsnLength()
-
-    def searchByNim (self, nim):
-        for i in self.mhs:
-            if i.nim == nim:
-                return i
-
-        return False
-
-    def searchByNip (self, nip):
-        for i in self.dsn:
-            if i.nip == nip:
-                return i
-
-        return False
-
-    def searchByNameMhs (self, nama):
+        self.lst = []
+    
+    def length (self):
+        return len(self.lst)
+    
+    def addToList (self, data):
+        self.lst.append(data);
+    
+    def searchByName (self, name):
         found = []
-        for i in self.mhs:
-            if i.nama == nama:
-                found.append(i)
-
-        if (len(found) > 0): return found
-        else: return False
-
-    def searchByNameDsn (self, nama):
-        found = []
-
-        for i in self.dsn:
-            if i.nama == nama:
-                found.append(i)
-
-        if (len(found) > 0): return found
-        else: return False
-
-    def addMhs (self, mhs):
-        self.mhs.append(mhs)
-
-    def addDsn (self, dsn):
-        self.dsn.append(dsn)
-
+        for i in self.lst:
+            if i.name == name:
+                return found
+        
+        return False
+    
     def getList (self):
+        return self.lst
+    
+class MhsList(ParentList):
+    def __init__ (self):
+        super().__init__()
+    
+    def searchByNim (self, nim):
+        for i in self.lst:
+            if i.nim == nim:
+                return True
+        
+        return False
+
+class DsnList(ParentList):
+    def __init__ (self):
+        super().__init__()
+    
+    def searchByNip (self, nip):
+        for i in self.lst:
+            if i.nip == nip:
+                return True
+        
+        return False
+
+
+class AllList:
+    def __init__ (self):
+        self.mhs = MhsList()
+        self.dsn = DsnList()
+    
+    def addMhs (self, data):
+        self.mhs.addToList(data)
+    
+    def addDsn (self, data):
+        self.dsn.addToList(data)
+    
+    def searchByNip (self, nip):
+        return self.dsn.searchByNip(nip)
+    
+    def searchByNim (self, nim):
+        return self.mhs.searchByNim(nim)
+        
+    def searchByNameDsn (self, name):
+        return self.dsn.searchByNameDsn(name)
+    
+    def searchByNameMhs (self, name):
+        return self.mhs.searchByNameMhs(name)
+
+class MakeList:
+    def getList (self, mhs, dsn):
         tableMhs = PrettyTable()
         tableMhs.field_names = ["NIM", "Nama", "Kelas", "Jam", "Nomor HP", "Jenis Kelamin", "Jurusan"]
-        for i in self.mhs:
+        for i in mhs:
             tableMhs.add_row([i.nim, i.nama.title(), i.kelas, i.jam.title(), i.nomorHp, i.jenisKelamin, i.jurusan])
 
         tableDsn = PrettyTable()
         tableDsn.field_names = ["NIP", "Nama", "Jabatan", "Nomor HP", "Jenis Kelamin"]
-        for i in self.dsn:
+        for i in dsn:
             tableDsn.add_row([i.nip, i.nama.title(), i.jabatan, i.nomorHp, i.jenisKelamin])
 
-        mhsLength = self.mhsLength()
-        dsnLength = self.dsnLength()
-        totalLength = self.totalLength()
+        mhsLength = len(mhs)
+        dsnLength = len(dsn)
+        totalLength = mhsLength + dsnLength
 
         print(f'Daftar Mahasiswa yang hadir')
         if mhsLength == 0: print('Tidak ada mahasiswa yang hadir')
@@ -234,7 +254,11 @@ def mainMenu():
     print('-' * 50)
 
 def visitorList():
-    lst.getList()
+    mhs = lst.mhs.getList()
+    dsn = lst.dsn.getList()
+
+    makeList = MakeList()
+    makeList.getList(mhs, dsn)
 
 def addVisitor():
     print('Tambah pengunjung')
@@ -370,7 +394,7 @@ def searchVisitor():
                 table = PrettyTable()
                 table.field_names = ["NIM", "Nama", "Kelas", "Jam", "Nomor HP", "Jenis Kelamin", "Jurusan"]
                 for i in found:
-                    table.add_row([i.nim, i.nama.title(), i.kelas, i.jam.title(), i.nomorHp, i.jenisKelamin, i.jurusan])
+                    table.add_row(i.row())
 
                 print(table)
 
@@ -389,7 +413,7 @@ def searchVisitor():
                 table = PrettyTable()
                 table.field_names = ["NIP", "Nama", "Jabatan", "Nomor HP", "Jenis Kelamin"]
                 for i in found:
-                    table.add_row([i.nip, i.nama.title(), i.jabatan, i.nomorHp, i.jenisKelamin])
+                    table.add_row(i.row())
 
                 print(table)
 
@@ -427,14 +451,13 @@ def searchByNameDsn():
 ### ==== Main Program ==== ###
 
 if __name__ == '__main__':
-    lst = Lst()
+    lst = AllList()
 
     while True:
         cls()
         mainMenu()
 
         op = inputOption_four()
-
         cls()
 
         if op == '1': visitorList()
@@ -447,4 +470,3 @@ if __name__ == '__main__':
         print()
         print()
         input("Any button to continue")
-

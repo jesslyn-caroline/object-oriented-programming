@@ -215,12 +215,12 @@ class MakeList:
         tableMhs = PrettyTable()
         tableMhs.field_names = ["NIM", "Nama", "Kelas", "Jam", "Nomor HP", "Jenis Kelamin", "Jurusan"]
         for i in mhs:
-            tableMhs.add_row([i.nim, i.nama.title(), i.kelas, i.jam.title(), i.nomorHp, i.jenisKelamin, i.jurusan])
+            tableMhs.add_row(i.row())
 
         tableDsn = PrettyTable()
         tableDsn.field_names = ["NIP", "Nama", "Jabatan", "Nomor HP", "Jenis Kelamin"]
         for i in dsn:
-            tableDsn.add_row([i.nip, i.nama.title(), i.jabatan, i.nomorHp, i.jenisKelamin])
+            tableDsn.add_row(i.row())
 
         mhsLength = len(mhs)
         dsnLength = len(dsn)

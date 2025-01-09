@@ -156,10 +156,10 @@ class ParentList:
     def searchByName (self, name):
         found = []
         for i in self.lst:
-            if i.name == name:
-                return found
+            if i.nama.lower() == name.lower():
+                found.append(i)
         
-        return False
+        return found
     
     def getList (self):
         return self.lst
@@ -205,10 +205,10 @@ class AllList:
         return self.mhs.searchByNim(nim)
         
     def searchByNameDsn (self, name):
-        return self.dsn.searchByNameDsn(name)
+        return self.dsn.searchByName(name)
     
     def searchByNameMhs (self, name):
-        return self.mhs.searchByNameMhs(name)
+        return self.mhs.searchByName(name)
 
 class MakeList:
     def getList (self, mhs, dsn):
@@ -243,51 +243,6 @@ class MakeList:
 ### ==== End of Mhs Dsn List Class ==== ###
 
 ### ==== Start of Single Responsibility Principle ==== ###
-
-def mainMenu():
-    print('Menu')
-    print('-' * 50)
-    print('1. Lihat daftar kehadiran')
-    print('2. Tambah pengunjung')
-    print('3. Mencari pengunjung')
-    print('4. Exit')
-    print('-' * 50)
-
-def visitorList():
-    mhs = lst.mhs.getList()
-    dsn = lst.dsn.getList()
-
-    makeList = MakeList()
-    makeList.getList(mhs, dsn)
-
-def addVisitor():
-    print('Tambah pengunjung')
-    print('-' * 50)
-    print('1. Mahasiswa')
-    print('2. Dosen')
-    print('-' * 50)
-
-    option = inputOption_two()
-
-    if option == '1': 
-        nim, nama, jenisKelamin, nomorHp, kelas, jam = addVisitorMhs()
-        pos = lst.searchByNim(nim)
-        if not pos: 
-            mhs = Mhs(nim, nama, kelas, jam, nomorHp, jenisKelamin)
-            lst.addMhs(mhs)
-            print("Mahasiswa tersebut telah ditambahkan")
-        else: 
-            print("Mahasiswa tersebut telah terdaftar sebelumnya")
-
-    elif option == '2': 
-        nip, nama, jabatan, nomorHp, jenisKelamin = addVisitorDsn()
-        pos = lst.searchByNip(nip)
-        if not pos: 
-            dsn = Dsn(nip, nama, jabatan, nomorHp, jenisKelamin)
-            lst.addDsn(dsn)
-            print("Dosen tersebut telah ditambahkan")
-        else: print("Dosen tersebut telah terdaftar sebelumnya")
-
 def inputOption_two():
     optionValid = False
     while not optionValid:
@@ -333,6 +288,50 @@ def inputHandle(neededData, handleFunction):
 
     return data
 
+def mainMenu():
+    print('Menu')
+    print('-' * 50)
+    print('1. Lihat daftar kehadiran')
+    print('2. Tambah pengunjung')
+    print('3. Mencari pengunjung')
+    print('4. Exit')
+    print('-' * 50)
+
+def visitorList():
+    mhs = lst.mhs.getList()
+    dsn = lst.dsn.getList()
+
+    makeList = MakeList()
+    makeList.getList(mhs, dsn)
+
+def addVisitor():
+    print('Tambah pengunjung')
+    print('-' * 50)
+    print('1. Mahasiswa')
+    print('2. Dosen')
+    print('-' * 50)
+
+    option = inputOption_two()
+
+    if option == '1': 
+        nim, nama, jenisKelamin, nomorHp, kelas, jam = addVisitorMhs()
+        pos = lst.searchByNim(nim)
+        if not pos: 
+            mhs = Mhs(nim, nama, kelas, jam, nomorHp, jenisKelamin)
+            lst.addMhs(mhs)
+            print("Mahasiswa tersebut telah ditambahkan")
+        else: 
+            print("Mahasiswa tersebut telah terdaftar sebelumnya")
+
+    elif option == '2': 
+        nip, nama, jabatan, nomorHp, jenisKelamin = addVisitorDsn()
+        pos = lst.searchByNip(nip)
+        if not pos: 
+            dsn = Dsn(nip, nama, jabatan, nomorHp, jenisKelamin)
+            lst.addDsn(dsn)
+            print("Dosen tersebut telah ditambahkan")
+        else: print("Dosen tersebut telah terdaftar sebelumnya")
+
 def addVisitorMhs():
     nim = inputHandle("NIM", checkCodeValidity)
     nama = inputHandle("Nama", checkNameValidity)
@@ -341,7 +340,7 @@ def addVisitorMhs():
     kelas = inputHandle("Kelas", checkClassValidity)
     jam = inputHandle("Jam", checkTimeValidity)
 
-    nama = nama.lower()
+    nama = str(nama.lower())
     jenisKelamin = jenisKelamin.upper()
     kelas = kelas.upper()
     jam = jam.lower()
@@ -355,7 +354,7 @@ def addVisitorDsn():
     nomorHp = inputHandle("Nomor HP", checkPhoneNumValidity)
     jabatan = input("Jabatan: ")
 
-    nama = nama.lower()
+    nama = str(nama.lower())
     jenisKelamin = jenisKelamin.upper()
 
     return nip, nama, jabatan, nomorHp, jenisKelamin
@@ -386,7 +385,6 @@ def searchVisitor():
 
         elif searchBy == '2': 
             found = searchByNameMhs()
-
             if found: 
                 table = PrettyTable()
                 table.field_names = ["NIM", "Nama", "Kelas", "Jam", "Nomor HP", "Jenis Kelamin", "Jurusan"]
@@ -406,6 +404,7 @@ def searchVisitor():
             else: print('Dosen tersebut tidak terdaftar')
 
         elif searchBy == '2': 
+            found = searchByNameDsn()
             if found: 
                 table = PrettyTable()
                 table.field_names = ["NIP", "Nama", "Jabatan", "Nomor HP", "Jenis Kelamin"]
@@ -437,7 +436,7 @@ def searchByNip():
 
 def searchByNameDsn():
     nama = inputHandle("Nama", checkNameValidity)
-    nama = nama.lower()
+    nama = str(nama.lower())
 
     found = lst.searchByNameDsn(nama)
     return found

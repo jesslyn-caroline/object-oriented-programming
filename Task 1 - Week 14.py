@@ -270,13 +270,22 @@ def addVisitor():
     option = inputOption_two()
 
     if option == '1': 
-        pos = addVisitorMhs()
-        if pos: print("Mahasiswa tersebut telah ditambahkan")
-        else: print("Mahasiswa tersebut telah terdaftar sebelumnya")
+        nim, nama, jenisKelamin, nomorHp, kelas, jam = addVisitorMhs()
+        pos = lst.searchByNim(nim)
+        if not pos: 
+            mhs = Mhs(nim, nama, kelas, jam, nomorHp, jenisKelamin)
+            lst.addMhs(mhs)
+            print("Mahasiswa tersebut telah ditambahkan")
+        else: 
+            print("Mahasiswa tersebut telah terdaftar sebelumnya")
 
     elif option == '2': 
-        pos = addVisitorDsn()
-        if pos: print("Dosen tersebut telah ditambahkan")
+        nip, nama, jabatan, nomorHp, jenisKelamin = addVisitorDsn()
+        pos = lst.searchByNip(nip)
+        if not pos: 
+            dsn = Dsn(nip, nama, jabatan, nomorHp, jenisKelamin)
+            lst.addDsn(dsn)
+            print("Dosen tersebut telah ditambahkan")
         else: print("Dosen tersebut telah terdaftar sebelumnya")
 
 def inputOption_two():
@@ -337,13 +346,7 @@ def addVisitorMhs():
     kelas = kelas.upper()
     jam = jam.lower()
 
-    found = lst.searchByNim(nim)
-    if not found:
-        mhs = Mhs(nim, nama, jenisKelamin, nomorHp, kelas, jam)
-        lst.addMhs(mhs)
-        return True
-
-    else: return False
+    return nim, nama, jenisKelamin, nomorHp, kelas, jam
 
 def addVisitorDsn():
     nip = inputHandle("NIP", checkCodeValidity)
@@ -355,13 +358,7 @@ def addVisitorDsn():
     nama = nama.lower()
     jenisKelamin = jenisKelamin.upper()
 
-    found = lst.searchByNip(nip)
-    if not found:
-        dsn = Dsn(nip, nama, jabatan, nomorHp, jenisKelamin)
-        lst.addDsn(dsn)
-        return True
-
-    else: return False
+    return nip, nama, jabatan, nomorHp, jenisKelamin
 
 def searchVisitor():
     print('Mencari pengunjung')

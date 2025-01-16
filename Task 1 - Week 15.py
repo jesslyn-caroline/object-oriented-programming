@@ -379,6 +379,7 @@ def searchVisitor():
 
     if option == '1':
         searchBy = inputOption_two()
+        lst = AllList(mhsList)
         if searchBy == '1': 
             found = searchByNim()
             if found: print('Mahasiswa tersebut ditemukan di dalam daftar')
@@ -398,7 +399,7 @@ def searchVisitor():
 
     elif option == '2':
         searchBy = inputOption_two()
-        
+        lst = AllList(dsnList)
         if searchBy == '1': 
             found = searchByNip()
             if found: print('Dosen tersebut ditemukan di dalam daftar')
@@ -426,8 +427,7 @@ def searchByNim():
 def searchByName():
     nama = inputHandle("Nama", checkNameValidity)
     nama = nama.lower()
-    
-    lst = AllList(mhsList)
+
     found = lst.searchByName(nama)
     return found
 

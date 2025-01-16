@@ -113,7 +113,8 @@ def checkTimeValidity(jam):
 ### ==== Start of Mhs Dsn Class ==== ###
 
 class Parent:
-    def __init__ (self, nama, nomorHp, jenisKelamin, As):
+    def __init__ (self, code, nama, nomorHp, jenisKelamin, As):
+        self.code = code
         self.nama = nama
         self.nomorHp = nomorHp
         self.jenisKelamin = jenisKelamin
@@ -121,8 +122,7 @@ class Parent:
 
 class Mhs (Parent):
     def __init__ (self, nim, nama, kelas, jam, nomorHp, jenisKelamin):
-        super().__init__ (nama, nomorHp, jenisKelamin, 'mhs')
-        self.nim = nim
+        super().__init__ (nim, nama, nomorHp, jenisKelamin, 'mhs')
         self.kelas = kelas
         self.jam = jam
         self.jurusan = 'IF' if nim[2:5] == '111' else 'TI' if nim[2:5] == '112' else 'SI' if nim[2:5] == '113' else 'MN' if nim[2:5] == '211' else 'AK'
@@ -132,8 +132,7 @@ class Mhs (Parent):
     
 class Dsn (Parent):
     def __init__ (self, nip, nama, jabatan, nomorHp, jenisKelamin):
-        super().__init__ (nama, nomorHp, jenisKelamin, 'dsn')
-        self.nip = nip
+        super().__init__ (nip, nama, nomorHp, jenisKelamin, 'dsn')
         self.jabatan = jabatan
     
     def row (self):
@@ -161,6 +160,13 @@ class ParentList:
         
         return found
     
+    def searchByCode (self, code):
+        for i in self.lst:
+            if i.code == code:
+                return True
+        
+        return False
+    
     def getList (self):
         return self.lst
     
@@ -168,23 +174,10 @@ class MhsList(ParentList):
     def __init__ (self):
         super().__init__()
     
-    def searchByNim (self, nim):
-        for i in self.lst:
-            if i.nim == nim:
-                return True
-        
-        return False
 
 class DsnList(ParentList):
     def __init__ (self):
         super().__init__()
-    
-    def searchByNip (self, nip):
-        for i in self.lst:
-            if i.nip == nip:
-                return True
-        
-        return False
 
 
 class AllList:
@@ -197,12 +190,9 @@ class AllList:
     def addVisitor (self, data):
         self.listClass.addToList(data)
     
-    def searchByNip (self, nip):
-        return self.listClass.searchByNip(nip)
-    
-    def searchByNim (self, nim):
-        return self.listClass.searchByNim(nim)
-        
+    def searchByCode (self, code):
+        return self.listClass.searchByCode(code)
+
     def searchByName (self, name):
         return self.listClass.searchByName(name)
 
@@ -316,7 +306,7 @@ def addVisitor():
     if option == '1': 
         nim, nama, jenisKelamin, nomorHp, kelas, jam = addVisitorMhs()
         lst = AllList(mhsList)
-        pos = lst.searchByNim(nim)
+        pos = lst.searchByCode(nim)
         if not pos: 
             mhs = Mhs(nim, nama, kelas, jam, nomorHp, jenisKelamin)
             lst.addVisitor(mhs)
@@ -327,7 +317,7 @@ def addVisitor():
     elif option == '2': 
         nip, nama, jabatan, nomorHp, jenisKelamin = addVisitorDsn()
         lst = AllList(dsnList)
-        pos = lst.searchByNip(nip)
+        pos = lst.searchByCode(nip)
         if not pos: 
             dsn = Dsn(nip, nama, jabatan, nomorHp, jenisKelamin)
             lst.addVisitor(dsn)
@@ -379,14 +369,13 @@ def searchVisitor():
 
     if option == '1':
         searchBy = inputOption_two()
-        lst = AllList(mhsList)
         if searchBy == '1': 
             found = searchByNim()
             if found: print('Mahasiswa tersebut ditemukan di dalam daftar')
             else: print('Mahasiswa tersebut tidak terdaftar')
 
         elif searchBy == '2': 
-            found = searchByName()
+            found = searchByNameMhs()
             if found: 
                 table = PrettyTable()
                 table.field_names = ["NIM", "Nama", "Kelas", "Jam", "Nomor HP", "Jenis Kelamin", "Jurusan"]
@@ -399,14 +388,14 @@ def searchVisitor():
 
     elif option == '2':
         searchBy = inputOption_two()
-        lst = AllList(dsnList)
+        
         if searchBy == '1': 
             found = searchByNip()
             if found: print('Dosen tersebut ditemukan di dalam daftar')
             else: print('Dosen tersebut tidak terdaftar')
 
         elif searchBy == '2': 
-            found = searchByName()
+            found = searchByNameDsn()
             if found: 
                 table = PrettyTable()
                 table.field_names = ["NIP", "Nama", "Jabatan", "Nomor HP", "Jenis Kelamin"]
@@ -421,13 +410,22 @@ def searchByNim():
     nim = inputHandle("NIM", checkCodeValidity)
     
     lst = AllList(mhsList)
-    found = lst.searchByNim(nim)
+    found = lst.searchByCode(nim)
     return found
 
-def searchByName():
+def searchByNameMhs():
     nama = inputHandle("Nama", checkNameValidity)
     nama = nama.lower()
+    
+    lst = AllList(mhsList)
+    found = lst.searchByName(nama)
+    return found
 
+def searchByNameDsn():
+    nama = inputHandle("Nama", checkNameValidity)
+    nama = nama.lower()
+    
+    lst = AllList(mhsList)
     found = lst.searchByName(nama)
     return found
 
@@ -435,7 +433,7 @@ def searchByNip():
     nip = inputHandle("NIP", checkCodeValidity)
 
     lst = AllList(dsnList)
-    found = lst.searchByNip(nip)
+    found = lst.searchByCode(nip)
     return found
 
 ### ==== End of Single Responsibility Principle ==== ###

@@ -3,7 +3,7 @@ import time
 class Inventory:
     def __init__(self):
         self.inventory = []
-    
+    https://github.com/jesslyn-caroline/object-oriented-programming/tree/main/Week%201
     def addToInventory(self, data):
         self.inventory.append(data)
     

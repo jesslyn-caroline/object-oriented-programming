@@ -1,3 +1,3 @@
-# Object-Oriented-Programming
+# Object-Oriented Programming
 
-Object-Oriented Programming using python
+Programming Language: Python
